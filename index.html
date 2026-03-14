@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perfil para Trabalho em Equipe</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple: #4A3F9F;
+    --purple-light: #EAE8F9;
+    --purple-mid: #7B72CC;
+    --green: #0D6B4F;
+    --green-light: #E1F3EC;
+    --blue: #1756A0;
+    --orange: #B84F10;
+    --orange-light: #FAEAE0;
+    --bg: #F7F5F0;
+    --card: #FFFFFF;
+    --text: #1A1A2E;
+    --muted: #6B6B80;
+    --border: rgba(0,0,0,0.08);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.6; }
+  .bg-pattern { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-image: radial-gradient(circle at 20% 20%, rgba(74,63,159,0.06) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(13,107,79,0.06) 0%, transparent 50%); pointer-events: none; z-index: 0; }
+  .container { max-width: 680px; margin: 0 auto; padding: 2rem 1.25rem 4rem; position: relative; z-index: 1; }
+
+  .intro { text-align: center; padding: 3rem 0 2.5rem; }
+  .intro-badge { display: inline-block; background: var(--purple-light); color: var(--purple); font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 16px; border-radius: 20px; margin-bottom: 1.25rem; }
+  .intro h1 { font-family: 'DM Serif Display', serif; font-size: clamp(28px, 5vw, 42px); line-height: 1.15; margin-bottom: 1rem; }
+  .intro h1 em { font-style: italic; color: var(--purple); }
+  .intro p { font-size: 16px; color: var(--muted); max-width: 460px; margin: 0 auto 2rem; }
+  .intro-meta { display: flex; justify-content: center; gap: 2rem; margin-bottom: 2.5rem; }
+  .meta-item { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+  .meta-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--purple-mid); }
+
+  .name-card { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); padding: 1.5rem; margin-bottom: 1.5rem; }
+  .name-card label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 8px; }
+  .name-card input { width: 100%; padding: 11px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); outline: none; transition: border-color 0.2s; }
+  .name-card input:focus { border-color: var(--purple-mid); }
+  .name-card input::placeholder { color: var(--muted); }
+
+  .progress-wrap { margin-bottom: 2rem; }
+  .progress-info { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+  .progress-track { height: 3px; background: rgba(0,0,0,0.08); border-radius: 2px; }
+  .progress-fill { height: 3px; background: var(--purple); border-radius: 2px; transition: width 0.5s ease; }
+
+  .group-card { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; margin-bottom: 1.5rem; box-shadow: 0 2px 20px rgba(0,0,0,0.04); }
+  .group-header { padding: 1.25rem 1.5rem 1rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+  .group-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .group-name { font-size: 14px; font-weight: 500; }
+  .group-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+  .group-tag { font-size: 11px; padding: 2px 8px; border-radius: 20px; background: var(--bg); color: var(--muted); border: 1px solid var(--border); }
+
+  .question-block { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); }
+  .question-block:last-child { border-bottom: none; }
+  .question-num { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .question-text { font-size: 15px; margin-bottom: 14px; line-height: 1.55; }
+
+  .options { display: flex; flex-direction: column; gap: 7px; }
+  .option-label { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; font-size: 14px; color: var(--text); transition: all 0.15s; line-height: 1.5; background: var(--bg); }
+  .option-label:hover { border-color: rgba(74,63,159,0.3); background: var(--purple-light); }
+  .option-label.selected { border-color: var(--purple); background: var(--purple-light); color: var(--purple); }
+  .option-label input[type=radio] { display: none; }
+  .opt-letter { width: 22px; height: 22px; border-radius: 6px; background: rgba(0,0,0,0.06); color: var(--muted); font-size: 11px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; transition: all 0.15s; }
+  .option-label.selected .opt-letter { background: var(--purple); color: white; }
+
+  .nav-bar { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 0 0; }
+  .btn { padding: 11px 28px; border-radius: 50px; font-size: 15px; font-weight: 500; cursor: pointer; border: none; transition: all 0.2s; font-family: 'DM Sans', sans-serif; }
+  .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+  .btn-ghost:hover { background: white; color: var(--text); }
+  .btn-primary { background: var(--purple); color: white; box-shadow: 0 4px 16px rgba(74,63,159,0.25); }
+  .btn-primary:hover { background: #3A2F8F; transform: translateY(-1px); }
+
+  .error-msg { font-size: 13px; color: var(--orange); text-align: center; margin-top: 12px; display: none; }
+  .page { display: none; }
+  .page.active { display: block; }
+
+  #result-section { display: none; }
+  .result-hero { text-align: center; padding: 2.5rem 0 2rem; }
+  .result-hero h2 { font-family: 'DM Serif Display', serif; font-size: clamp(24px, 4vw, 36px); margin-bottom: 8px; }
+  .result-hero p { font-size: 15px; color: var(--muted); }
+
+  .scores-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.5rem; }
+  @media (max-width: 480px) { .scores-grid { grid-template-columns: 1fr; } }
+  .score-card { background: var(--card); border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 1rem 1.25rem; }
+  .score-label { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  .score-val { font-size: 26px; font-weight: 500; margin-bottom: 8px; }
+  .score-bar-bg { height: 3px; background: rgba(0,0,0,0.07); border-radius: 2px; }
+  .score-bar { height: 3px; border-radius: 2px; }
+  .score-qualities { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px; }
+  .quality-tag { font-size: 11px; padding: 2px 8px; border-radius: 20px; border: 1px solid var(--border); color: var(--muted); }
+
+  .insight-block { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); padding: 1.5rem; margin-bottom: 1rem; }
+  .insight-badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 3px 12px; border-radius: 20px; margin-bottom: 10px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .badge-green { background: var(--green-light); color: var(--green); }
+  .badge-orange { background: var(--orange-light); color: var(--orange); }
+  .insight-block h3 { font-size: 16px; font-weight: 500; margin-bottom: 6px; }
+  .insight-block p { font-size: 14px; color: var(--muted); line-height: 1.65; margin-bottom: 12px; }
+  .insight-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .insight-tag { font-size: 13px; padding: 5px 14px; border-radius: 20px; }
+
+  .send-status { text-align: center; font-size: 13px; margin-top: 12px; min-height: 20px; }
+  .send-ok { color: var(--green); }
+  .send-err { color: var(--orange); }
+
+  .actions { display: flex; gap: 10px; flex-wrap: wrap; padding: 1rem 0 0; }
+  .btn-outline { padding: 11px 24px; border-radius: 50px; font-size: 14px; font-weight: 500; cursor: pointer; background: transparent; color: var(--purple); border: 1px solid rgba(74,63,159,0.3); font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+  .btn-outline:hover { background: var(--purple-light); }
+
+  .c0{color:#4A3F9F} .b0{background:#4A3F9F}
+  .c1{color:#0D6B4F} .b1{background:#0D6B4F}
+  .c2{color:#1756A0} .b2{background:#1756A0}
+  .c3{color:#B84F10} .b3{background:#B84F10}
+  .c4{color:#7A4A08} .b4{background:#7A4A08}
+  .c5{color:#0A5F5A} .b5{background:#0A5F5A}
+  .c6{color:#4A3F9F} .b6{background:#4A3F9F}
+  .c7{color:#8A2020} .b7{background:#8A2020}
+  .c8{color:#12367A} .b8{background:#12367A}
+</style>
+</head>
+<body>
+<div class="bg-pattern"></div>
+<div class="container">
+
+  <div id="intro-section">
+    <div class="intro">
+      <div class="intro-badge">Trabalho em equipe · Faculdade</div>
+      <h1>Descubra seu <em>perfil</em> de trabalho em equipe</h1>
+      <p>Responda situações do dia a dia e descubra seus pontos fortes — e onde você pode se complementar com colegas.</p>
+      <div class="intro-meta">
+        <div class="meta-item"><div class="meta-dot"></div>27 perguntas</div>
+        <div class="meta-item"><div class="meta-dot"></div>~8 minutos</div>
+        <div class="meta-item"><div class="meta-dot"></div>9 competências</div>
+      </div>
+    </div>
+    <div class="name-card">
+      <label for="player-name">Seu nome completo</label>
+      <input type="text" id="player-name" placeholder="Ex: Ana Paula Silva" autocomplete="name" />
+    </div>
+    <div style="text-align:center">
+      <button class="btn btn-primary" onclick="startQuiz()">Começar questionário</button>
+      <div class="error-msg" id="name-err">Por favor, escreva seu nome antes de começar.</div>
+    </div>
+  </div>
+
+  <div id="quiz-section" style="display:none">
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <span id="step-label">Grupo 1 de 9</span>
+        <span id="pct-label">0%</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+    </div>
+    <div id="pages-container"></div>
+    <div class="nav-bar">
+      <button class="btn btn-ghost" id="btn-prev" onclick="navigate(-1)" style="visibility:hidden">Anterior</button>
+      <button class="btn btn-primary" id="btn-next" onclick="navigate(1)">Próximo grupo →</button>
+    </div>
+    <div class="error-msg" id="err-msg">Responda todas as perguntas antes de continuar.</div>
+  </div>
+
+  <div id="result-section">
+    <div class="result-hero">
+      <div class="intro-badge">Seu resultado</div>
+      <h2 id="result-name-title">Seu perfil de equipe</h2>
+      <p>Pontuação de 1 a 5 por competência. Quanto maior, mais desenvolvida.</p>
+    </div>
+    <div class="scores-grid" id="score-grid"></div>
+    <div id="insights"></div>
+    <div class="send-status" id="send-status"></div>
+    <div class="actions">
+      <button class="btn btn-outline" onclick="restart()">Refazer questionário</button>
+      <button class="btn btn-primary" onclick="copyResult()">Copiar resultado</button>
+    </div>
+  </div>
+
+</div>
+<script>
+// ⚠️ SUBSTITUA PELA URL DO SEU WEB APP APÓS PUBLICAR O APPS SCRIPT
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx3FN_ZyvjqSFjaYRXHGdbgTLxBFwMf6wjsUg1QLWGeLNxFIaTIsISOse2sRmrewy5RRw/exec";
+
+const groups = [
+  { name:"Maturidade & Equilíbrio emocional", icon:"🧘", qualities:["Maturidade","Equilíbrio","Inteligência Emocional"],
+    questions:[
+      { text:"Durante uma reunião tensa, um colega discorda da sua ideia de forma ácida. Você:", options:["Responde com calma, acolhe a crítica e busca entender o ponto dele","Responde com calma, mas fica remoendo o episódio depois","Fica em silêncio por fora, mas se irrita internamente","Rebate na hora, sem filtrar muito o tom","Entra em confronto aberto e leva para o lado pessoal"], scores:[5,4,3,2,1] },
+      { text:"O prazo do grupo foi adiado por terceiros e o trabalho da semana 'foi por água abaixo'. Como você reage?", options:["Adapta o plano rapidamente e motiva o grupo a recomeçar","Aceita, mas demora um tempo para se recompor","Reclama bastante, mas eventualmente volta ao trilho","Fica desmotivado por dias","Responsabiliza alguém e o clima fica ruim"], scores:[5,4,3,2,1] },
+      { text:"Você percebe que está sobrecarregado enquanto um colega parece sem função. Você:", options:["Conversa com ele diretamente e redistribuem as tarefas juntos","Fala com o líder do grupo discretamente","Faz tudo sem reclamar, mas fica ressentido","Entrega menos do que poderia e justifica o cansaço","Reclama para os outros do grupo, mas não resolve"], scores:[5,4,3,2,1] }
+    ]
+  },
+  { name:"Ética, Respeito & Postura", icon:"🤝", qualities:["Ética","Respeito","Postura"],
+    questions:[
+      { text:"Seu grupo tomou uma decisão que você acha errada, mas a maioria apoiou. Você:", options:["Registra sua opinião com respeito e, decidido, executa com comprometimento","Aceita, mas abre um adendo antes de executar","Executa, mas comenta com terceiros que é errado","Tenta ainda mudar a decisão mesmo depois de encerrada","Não cumpre ou cumpre de má vontade"], scores:[5,4,3,2,1] },
+      { text:"Um integrante mais quieto tem uma boa ideia, mas o grupo tende a ignorá-la. Você:", options:["Defende a ideia ativamente e garante que ela seja ouvida","Concorda em voz alta quando alguém menciona","Percebe, mas não intervém","Passa por cima sem notar","Seguia outra direção e reforça a ideia dominante"], scores:[5,4,3,2,1] },
+      { text:"Em uma apresentação, você percebe que o slide tem um dado incorreto. Seu grupo já está pronto. Você:", options:["Avisa o grupo imediatamente e propõe corrigir antes de apresentar","Avisa só quem vai apresentar para ajustar na fala","Fica em silêncio — o prazo é apertado","Menciona depois, já no caminho","Prefere não causar confusão e deixa passar"], scores:[5,4,3,2,1] }
+    ]
+  },
+  { name:"Comunicação & Escuta", icon:"💬", qualities:["Comunicação","Escuta ativa","Argumentação"],
+    questions:[
+      { text:"Um colega está explicando sua parte do trabalho e você já entendeu a ideia central. Você:", options:["Ouve até o fim e só então faz perguntas ou acrescenta","Ouve, mas já pensa na sua resposta enquando ele fala","Interrompe educadamente para confirmar que entendeu","Completa a frase dele antes de terminar","Desvia o olhar ou pega o celular enquando aguarda sua vez"], scores:[5,4,3,2,1] },
+      { text:"Você precisa convencer o grupo de uma mudança de abordagem. Como age?", options:["Apresenta dados, exemplos e escuta objeções antes de concluir","Defende seu ponto com entusiasmo, mesmo sem muitos dados","Espera o momento certo e solta a ideia de forma natural","Fala uma vez; se o grupo não comprar, desiste","Insiste repetindo os mesmos argumentos em voz mais alta"], scores:[5,4,3,2,1] },
+      { text:"Após uma discussão acalorada, o grupo precisa alinhar o que foi decidido. Você:", options:["Resume os pontos principais e confirma com todos se entenderam igual","Pergunta para um colega se entendeu a mesma coisa que você","Assume que todos entenderam e parte para a execução","Espera alguém fazer o resumo","Acha que discussões assim são perda de tempo e prefere só agir"], scores:[5,4,3,2,1] }
+    ]
+  },
+  { name:"Comprometimento & Responsabilidade", icon:"🎯", qualities:["Comprometimento","Responsabilidade","Seriedade"],
+    questions:[
+      { text:"Você assumiu uma tarefa, mas surgiu um imprevisto pessoal no mesmo dia do prazo. Você:", options:["Avisa o grupo com antecedência e já propõe uma solução ou substituto","Avisa assim que pode e pede desculpas","Entrega com atraso sem avisar antes","Entrega pela metade, sem explicação","Some e espera alguém perguntar"], scores:[5,4,3,2,1] },
+      { text:"O grupo recebeu um feedback ruim de um professor. Qual sua postura?", options:["Analisa o que falhou, assume sua parte e sugere o que mudar","Aceita o feedback, mas internamente acha injusto","Culpa a divisão de tarefas ou outro integrante","Minimiza: 'é só um trabalho'","Fica na defensiva e questiona o critério do professor"], scores:[5,4,3,2,1] },
+      { text:"Na reta final antes da entrega, surgem pendências que ninguém assumiu. Você:", options:["Toma frente, divide com o grupo e garante que tudo seja entregue","Pega o que consegue e deixa o resto para o grupo resolver","Faz a sua parte e avisa que o resto está em aberto","Espera alguém se voluntariar","Fica ansioso, mas não age por medo de sobrecarga"], scores:[5,4,3,2,1] }
+    ]
+  },
+  { name:"Organização, Foco & Eficiência", icon:"📋", qualities:["Organização","Foco","Eficiência"],
+    questions:[
+      { text:"O grupo tem várias ideias soltas após o brainstorm. Como você contribui?", options:["Organiza as ideias em categorias, propõe prioridades e próximos passos","Organiza no papel ou mentalmente, mas não compartilha estruturado","Espera alguém sistematizar e então opina","Mergulha em uma ideia sem pensar no todo","Segue o fluxo sem se preocupar com estrutura"], scores:[5,4,3,2,1] },
+      { text:"Durante a execução do trabalho, o grupo começa a se distrair com ideias novas. Você:", options:["Reforça o foco no objetivo e propõe registrar as ideias para depois","Concorda verbalmente com o foco, mas também se distrai um pouco","Aproveita para explorar as ideias novas — pode ser útil","Segue as ideias novas com entusiasmo","Faz outra coisa enquando a conversa deriva"], scores:[5,4,3,2,1] },
+      { text:"Você tem 3 horas para concluir sua parte. Como você trabalha?", options:["Divide as 3 horas em blocos, prioriza o mais crítico e revisa no final","Começa pelo mais fácil e vai ganhando ritmo","Começa, para várias vezes e entrega no último minuto","Trabalha bem só sob pressão — começa na última hora","Precisa de alguém ao lado para manter o ritmo"], scores:[5,4,3,2,1] }
+    ]
+  },
+  { name:"Cooperação, Humildade & Companheirismo", icon:"🌱", qualities:["Cooperação","Humildade","Companheirismo"],
+    questions:[
+      { text:"Um colega está travado na sua parte. Você está adiantado. O que faz?", options:["Oferece ajuda proativamente e acompanha até ele desbloquear","Oferece se ele pedir","Espera ver se ele resolve sozinho","Faz a parte dele também, mas fica ressentido","Foca no seu e deixa o problema para o grupo resolver depois"], scores:[5,4,3,2,1] },
+      { text:"O grupo elogia uma ideia que veio de uma sugestão sua — mas o crédito foi para outro colega. Você:", options:["Fica feliz pelo resultado e não sente necessidade de se destacar","Menciona discretamente que a ideia foi sua, mas sem drama","Fica um pouco magoado, mas deixa passar","Corrige quem deu o crédito errado na hora","Fica magoado e afeta seu humor no grupo"], scores:[5,4,3,2,1] },
+      { text:"O grupo decide usar uma ferramenta que você não domina, mas outros sim. Você:", options:["Pede ajuda, aprende e contribui da forma que consegue","Aprende sozinho antes de pedir ajuda","Aceita e faz a parte que não precisa da ferramenta","Evita as tarefas que envolvem essa ferramenta","Sugere mudar para uma que você já conhece"], scores:[5,4,3,2,1] }
+    ]
+  },
+  { name:"Liderança, Proatividade & Visão", icon:"🔭", qualities:["Liderança","Proatividade","Visão sistêmica"],
+    questions:[
+      { text:"O grupo está sem direção clara no início do projeto. Você:", options:["Propõe uma estrutura de trabalho e convida todos a contribuir","Espera alguém tomar frente e então contribui","Sugere uma ideia, mas recua se não tiver receptividade","Segue quem for mais ativo, sem liderar","Prefere executar do que organizar"], scores:[5,4,3,2,1] },
+      { text:"Você percebe um risco no projeto que ninguém mencionou ainda. O que faz?", options:["Levanta o ponto imediatamente e propõe como mitigá-lo","Espera o momento certo na próxima reunião para mencionar","Comenta com um colega próximo para ver se ele leva ao grupo","Torce para não acontecer e segue","Só menciona se o risco se materializar"], scores:[5,4,3,2,1] },
+      { text:"Qual frase descreve melhor como você enxerga o trabalho do grupo?", options:["Penso em como cada parte se conecta e impacta o resultado final","Tenho boa visão do todo, mas foco na minha entrega","Prefiro entender bem a minha parte e confiar nas demais","Raramente paro para pensar além da minha tarefa","O todo é responsabilidade de quem coordena"], scores:[5,4,3,2,1] }
+    ]
+  },
+  { name:"Autoconfiança, Determinação & Resiliência", icon:"💪", qualities:["Autoconfiança","Determinação","Resiliência"],
+    questions:[
+      { text:"O grupo descartou sua ideia sem muita discussão. Você:", options:["Pede que seja ao menos avaliada antes de descartar e apresenta argumentos","Aceita, mas pede feedback sobre por que não funcionou","Aceita em silêncio, mas fica inseguro para sugerir de novo","Desiste de propor ideias novas naquela sessão","Fica cabisbaixo e o rendimento cai"], scores:[5,4,3,2,1] },
+      { text:"O trabalho é mais difícil do que o esperado e o grupo cogita simplificar demais. Você:", options:["Defende manter o nível de qualidade e propõe como viabilizar","Concorda com simplificações pontuais, mas mantém a essência","Aceita a simplificação sem questionar","Prefere entregar mais simples a arriscar não entregar","Abandona partes importantes para aliviar a pressão"], scores:[5,4,3,2,1] },
+      { text:"Após um fracasso parcial no projeto, qual é o seu comportamento natural?", options:["Analisa o que deu errado, tira aprendizados e parte de novo com energia","Demora um pouco, mas se recupera e segue","Precisa de incentivo do grupo para voltar ao ritmo","Fica travado por um bom tempo","Tende a desistir ou reduzir muito as expectativas"], scores:[5,4,3,2,1] }
+    ]
+  },
+  { name:"Criatividade, Estratégia & Negociação", icon:"✨", qualities:["Criatividade","Estratégia","Negociação"],
+    questions:[
+      { text:"O grupo está preso em uma abordagem que não está funcionando. Você:", options:["Propõe uma quebra de paradigma e apresenta uma alternativa incomum","Sugere adaptar o que já existe de forma incremental","Pesquisa o que outras equipes fizeram e propõe replicar","Espera alguém propor e então melhora a ideia","Insiste na abordagem original até não haver outra saída"], scores:[5,4,3,2,1] },
+      { text:"Para distribuir tarefas, o grupo precisa decidir quem faz o quê. Você:", options:["Mapeia os pontos fortes de cada um e propõe a distribuição mais eficiente","Deixa o grupo decidir e aceita qualquer função","Pega a tarefa que mais gosta, independente do que o grupo precisa","Fica em silêncio e espera sobrar algo","Tenta pegar a tarefa mais fácil para ter menos pressão"], scores:[5,4,3,2,1] },
+      { text:"Dois integrantes divergem fortemente sobre um caminho. Você:", options:["Media ativamente, busca entender os dois lados e propõe um meio-termo","Apoia quem tiver o argumento mais sólido","Fica de fora para não criar mais conflito","Apoia quem tiver mais simpatia sua no grupo","Empurra a decisão para o professor resolver"], scores:[5,4,3,2,1] }
+    ]
+  }
+];
+
+const bgColors = ['#EAE8F9','#E1F3EC','#E3EEF9','#FAEAE0','#FDF0D5','#DCEEED','#EAE8F9','#FAEAEA','#E0E9F9'];
+const colorClasses = ['c0','c1','c2','c3','c4','c5','c6','c7','c8'];
+const barClasses   = ['b0','b1','b2','b3','b4','b5','b6','b7','b8'];
+let currentPage = 0;
+const answers = {};
+let playerName = '';
+
+function startQuiz() {
+  const nameInput = document.getElementById('player-name').value.trim();
+  if (!nameInput) { document.getElementById('name-err').style.display = 'block'; return; }
+  playerName = nameInput;
+  document.getElementById('name-err').style.display = 'none';
+  document.getElementById('intro-section').style.display = 'none';
+  document.getElementById('quiz-section').style.display = 'block';
+  buildPages();
+}
+
+function buildPages() {
+  const container = document.getElementById('pages-container');
+  groups.forEach((g, gi) => {
+    const div = document.createElement('div');
+    div.className = 'page' + (gi === 0 ? ' active' : '');
+    div.id = 'page-' + gi;
+    let html = `<div class="group-card"><div class="group-header"><div class="group-icon" style="background:${bgColors[gi]}">${g.icon}</div><div><div class="group-name">${g.name}</div><div class="group-tags">${g.qualities.map(q=>`<span class="group-tag">${q}</span>`).join('')}</div></div></div>`;
+    const letters = ['A','B','C','D','E'];
+    g.questions.forEach((q, qi) => {
+      html += `<div class="question-block"><div class="question-num">Pergunta ${gi*3+qi+1} de 27</div><div class="question-text">${q.text}</div><div class="options">`;
+      q.options.forEach((opt, oi) => {
+        html += `<label class="option-label" id="lbl_${gi}_${qi}_${oi}"><input type="radio" name="q_${gi}_${qi}" value="${q.scores[oi]}" onchange="selectOpt(${gi},${qi},${oi},this)"><span class="opt-letter">${letters[oi]}</span><span>${opt}</span></label>`;
+      });
+      html += `</div></div>`;
+    });
+    html += '</div>';
+    div.innerHTML = html;
+    container.appendChild(div);
+  });
+}
+
+function selectOpt(gi, qi, oi, input) {
+  answers[`${gi}_${qi}`] = parseInt(input.value);
+  document.querySelectorAll(`#page-${gi} .question-block:nth-child(${qi+2}) .option-label`).forEach((l,i) => l.classList.toggle('selected', i === oi));
+}
+
+function navigate(dir) {
+  if (dir === 1) {
+    let missing = false;
+    for (let qi = 0; qi < 3; qi++) { if (answers[`${currentPage}_${qi}`] === undefined) { missing = true; break; } }
+    if (missing) { document.getElementById('err-msg').style.display = 'block'; return; }
+    document.getElementById('err-msg').style.display = 'none';
+  }
+  document.getElementById('page-' + currentPage).classList.remove('active');
+  currentPage += dir;
+  if (currentPage >= groups.length) { showResults(); return; }
+  document.getElementById('page-' + currentPage).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  document.getElementById('btn-prev').style.visibility = currentPage > 0 ? 'visible' : 'hidden';
+  document.getElementById('btn-next').textContent = currentPage === groups.length - 1 ? 'Ver resultado →' : 'Próximo grupo →';
+  document.getElementById('step-label').textContent = `Grupo ${currentPage+1} de ${groups.length}`;
+  const pct = Math.round((currentPage / groups.length) * 100);
+  document.getElementById('pct-label').textContent = pct + '%';
+  document.getElementById('prog').style.width = pct + '%';
+}
+
+function showResults() {
+  document.getElementById('quiz-section').style.display = 'none';
+  document.getElementById('result-section').style.display = 'block';
+  document.getElementById('prog').style.width = '100%';
+  document.getElementById('result-name-title').textContent = 'Perfil de ' + playerName;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  const groupScores = groups.map((g, gi) => {
+    const vals = [0,1,2].map(qi => answers[`${gi}_${qi}`] || 0);
+    return { ...g, avg: (vals[0]+vals[1]+vals[2]) / 3 };
+  });
+
+  const grid = document.getElementById('score-grid');
+  groupScores.forEach((gs, i) => {
+    const pct = Math.round((gs.avg / 5) * 100);
+    grid.innerHTML += `<div class="score-card"><div class="score-label">${gs.icon} ${gs.name}</div><div class="score-val ${colorClasses[i]}">${gs.avg.toFixed(1)}</div><div class="score-bar-bg"><div class="score-bar ${barClasses[i]}" style="width:${pct}%"></div></div><div class="score-qualities">${gs.qualities.map(q=>`<span class="quality-tag">${q}</span>`).join('')}</div></div>`;
+  });
+
+  const sorted = [...groupScores].sort((a,b) => b.avg - a.avg);
+  document.getElementById('insights').innerHTML = `
+    <div class="insight-block"><span class="insight-badge badge-green">Pontos fortes</span><h3>Você se destaca em</h3><p>Esses são seus maiores diferenciais. Use-os para complementar colegas com perfis diferentes ao formar seu trio.</p><div class="insight-tags">${sorted.slice(0,3).map(s=>`<span class="insight-tag" style="background:#E1F3EC;color:#0D6B4F">${s.icon} ${s.name} — ${s.avg.toFixed(1)}</span>`).join('')}</div></div>
+    <div class="insight-block"><span class="insight-badge badge-orange">A desenvolver</span><h3>Oportunidades de crescimento</h3><p>Busque colegas que tenham alta pontuação nessas áreas. A complementaridade é exatamente o que o exercício quer revelar.</p><div class="insight-tags">${sorted.slice(-3).reverse().map(s=>`<span class="insight-tag" style="background:#FAEAE0;color:#B84F10">${s.icon} ${s.name} — ${s.avg.toFixed(1)}</span>`).join('')}</div></div>`;
+
+  window._lastScores = groupScores;
+  sendToSheet(playerName, groupScores.map(gs => gs.avg));
+}
+
+function sendToSheet(name, scores) {
+  const status = document.getElementById('send-status');
+  if (APPS_SCRIPT_URL === "COLE_AQUI_A_URL_DO_WEB_APP") {
+    status.innerHTML = '<span style="color:#aaa">⚠️ Configure a URL do Apps Script no HTML.</span>';
+    return;
+  }
+  status.innerHTML = '<span style="color:#aaa">Salvando resultado...</span>';
+  fetch(APPS_SCRIPT_URL, {
+    method: 'POST', mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, scores })
+  })
+  .then(() => { status.innerHTML = '<span class="send-ok">✓ Resultado salvo na planilha!</span>'; })
+  .catch(() => { status.innerHTML = '<span class="send-err">Não foi possível salvar. Verifique sua conexão.</span>'; });
+}
+
+function copyResult() {
+  if (!window._lastScores) return;
+  let text = `Perfil de trabalho em equipe — ${playerName}\n\n`;
+  window._lastScores.forEach(gs => { text += `${gs.name}: ${gs.avg.toFixed(1)}/5\n`; });
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target; btn.textContent = 'Copiado!';
+    setTimeout(() => btn.textContent = 'Copiar resultado', 2000);
+  });
+}
+
+function restart() {
+  Object.keys(answers).forEach(k => delete answers[k]);
+  currentPage = 0; playerName = '';
+  ['result-section','quiz-section'].forEach(id => document.getElementById(id).style.display = 'none');
+  document.getElementById('score-grid').innerHTML = '';
+  document.getElementById('insights').innerHTML = '';
+  document.getElementById('send-status').innerHTML = '';
+  document.getElementById('pages-container').innerHTML = '';
+  document.getElementById('intro-section').style.display = 'block';
+  document.getElementById('player-name').value = '';
+  document.getElementById('btn-prev').style.visibility = 'hidden';
+  document.getElementById('btn-next').textContent = 'Próximo grupo →';
+  document.getElementById('step-label').textContent = 'Grupo 1 de 9';
+  document.getElementById('pct-label').textContent = '0%';
+  document.getElementById('prog').style.width = '0%';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
